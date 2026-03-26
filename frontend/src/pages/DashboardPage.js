@@ -256,10 +256,10 @@ const DashboardPage = () => {
             </span>
           </div>
           
-          {weeklyProgress?.week_data && (
-            <div className="h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={weeklyProgress.week_data}>
+          {weeklyProgress?.week_data && weeklyProgress.week_data.length > 0 ? (
+            <div className="h-[200px] w-full min-w-0">
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={weeklyProgress.week_data} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
                   <XAxis 
                     dataKey="day" 
                     axisLine={false}
@@ -280,6 +280,10 @@ const DashboardPage = () => {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="h-[200px] flex items-center justify-center text-[#737373]">
+              Start working out to see your weekly progress
             </div>
           )}
         </Card>
