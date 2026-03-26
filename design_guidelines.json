@@ -1,0 +1,135 @@
+{
+  "theme": "dark",
+  "archetype": "2 (Performance Pro)",
+  "colors": {
+    "background": {
+      "default": "#0A0A0A",
+      "surface": "#141414",
+      "surface_hover": "#1A1A1A"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#A3A3A3",
+      "muted": "#737373"
+    },
+    "primary": {
+      "default": "#007AFF",
+      "hover": "#005BB5",
+      "foreground": "#FFFFFF"
+    },
+    "accent": {
+      "default": "#FF3B30",
+      "hover": "#D92B22",
+      "foreground": "#FFFFFF"
+    },
+    "border": {
+      "default": "rgba(255, 255, 255, 0.1)",
+      "focus": "#007AFF"
+    },
+    "status": {
+      "success": "#34C759",
+      "warning": "#FF9500",
+      "error": "#FF3B30"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "heading": "'Barlow Condensed', sans-serif",
+      "body": "'DM Sans', sans-serif",
+      "mono": "'JetBrains Mono', monospace"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter leading-none uppercase",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-tight uppercase",
+      "h3": "text-xl sm:text-2xl font-bold tracking-tight leading-snug",
+      "h4": "text-lg sm:text-xl font-semibold tracking-tight",
+      "body": "text-base font-normal tracking-wide leading-relaxed",
+      "small": "text-sm font-medium tracking-wider",
+      "label": "text-xs font-bold tracking-[0.2em] uppercase"
+    }
+  },
+  "layout_and_spacing": {
+    "system": "The Control Room Grid",
+    "spacing_scale": "p-1, p-2, p-4, p-6, p-8, p-12, p-16, p-24, p-32",
+    "container_padding": "px-4 sm:px-6 lg:px-8",
+    "grid_columns": "grid-cols-1 md:grid-cols-3 lg:grid-cols-4",
+    "grid_gap": "gap-4 md:gap-6",
+    "corners": "rounded-none sm:rounded-sm",
+    "borders": "border border-white/10"
+  },
+  "surfaces": {
+    "dashboard_cards": "bg-[#141414] border border-white/10 shadow-none hover:shadow-[0_0_15px_rgba(0,122,255,0.15)] hover:border-white/20 transition-all duration-300",
+    "header": "bg-[#0A0A0A]/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-50",
+    "buttons": "bg-[#007AFF] text-white font-bold uppercase tracking-wider rounded-none hover:bg-[#005BB5] transition-colors focus:ring-2 focus:ring-[#007AFF]/50 focus:outline-none flex items-center justify-center",
+    "inputs": "bg-[#141414] border border-white/10 text-white focus:border-[#007AFF] focus:ring-1 focus:ring-[#007AFF] rounded-none transition-all",
+    "glassmorphism": "bg-black/60 backdrop-blur-xl border border-white/10"
+  },
+  "motion": {
+    "hover": "transition-all duration-200 ease-in-out",
+    "click": "active:scale-[0.98]",
+    "entrance": "animate-in fade-in slide-in-from-bottom-4 duration-500"
+  },
+  "components": {
+    "navigation": "Top or side navigation with clear active states (Volt Blue border/text). Desktop links visible, mobile hamburger.",
+    "tables_lists": "Dense rows, 1px bottom border between items, high contrast labels.",
+    "charts": "Recharts with transparent backgrounds, Volt Blue and Electric Blaze lines, white axis text.",
+    "progress_bars": "bg-[#141414] overflow-hidden with h-full bg-[#007AFF] or #FF3B30. No rounded corners.",
+    "streak_tracker": "Grid of small squares (like GitHub contributions) or bold typography indicating days.",
+    "cards": "Cardless look or sharp rectangular shapes. Do not use soft roundness."
+  },
+  "media": {
+    "image_urls": {
+      "dashboard_background": {
+        "url": "https://static.prod-images.emergentagent.com/jobs/4de36433-3c34-458f-89db-19a5c086624e/images/42fb16b503d48e6670e827add3c85e74260f89f6b791ddce16e100fb205146dc.png",
+        "description": "Dark sleek fitness dashboard background, obsidian black with glowing grid lines",
+        "category": "background"
+      },
+      "hero_onboarding": {
+        "url": "https://images.pexels.com/photos/1552249/pexels-photo-1552249.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "A strong female weightlifter squats with a barbell in a dimly lit gym",
+        "category": "hero"
+      },
+      "hero_alternative": {
+        "url": "https://images.pexels.com/photos/136404/pexels-photo-136404.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Woman doing intense leg press workout",
+        "category": "hero"
+      },
+      "workout_beginner": {
+        "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxob21lJTIwd29ya291dHxlbnwwfHx8fDE3NzQ1MzM2NTh8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Woman exercising indoors",
+        "category": "workout_cover"
+      },
+      "workout_weight_loss": {
+        "url": "https://images.unsplash.com/photo-1693214674477-1159bddf1598?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHw0fHxneW0lMjB3b3Jrb3V0JTIwZGFya3xlbnwwfHx8fDE3NzQ1MzM2NTd8MA&ixlib=rb-4.1.0&q=85",
+        "description": "A gym with a row of exercise machines",
+        "category": "workout_cover"
+      },
+      "workout_muscle": {
+        "url": "https://images.unsplash.com/photo-1603665409265-bdc00027c217?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxneW0lMjB3b3Jrb3V0JTIwZGFya3xlbnwwfHx8fDE3NzQ1MzM2NTd8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Red and black dumbbell on black floor",
+        "category": "workout_cover"
+      },
+      "workout_flexibility": {
+        "url": "https://images.unsplash.com/photo-1607909599990-e2c4778e546b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAxODF8MHwxfHNlYXJjaHwxfHx5b2dhJTIwc3RyZXRjaHxlbnwwfHx8fDE3NzQ1MzM2NTd8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Woman in white shirt doing yoga outdoors",
+        "category": "workout_cover"
+      },
+      "workout_home": {
+        "url": "https://images.pexels.com/photos/6496120/pexels-photo-6496120.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Woman performing a stretching exercise indoors",
+        "category": "workout_cover"
+      },
+      "workout_rehab": {
+        "url": "https://images.unsplash.com/photo-1701824429192-74ad7c2246f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAxODF8MHwxfHNlYXJjaHw0fHx5b2dhJTIwc3RyZXRjaHxlbnwwfHx8fDE3NzQ1MzM2NTd8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Man sitting on the floor doing a yoga/rehab pose",
+        "category": "workout_cover"
+      }
+    }
+  },
+  "instructions_to_main_agent": {
+    "icons": "Use lucide-react (default) or install @phosphor-icons/react. For fitness apps, bold/duotone Phosphor icons look great. Run `yarn add @phosphor-icons/react` if choosing Phosphor.",
+    "fonts": "Include fonts via Google Fonts in index.html or layout: Barlow Condensed (Headings), DM Sans (Body).",
+    "theming": "Ensure the application strictly uses dark mode with deep black (#0A0A0A) as base. Avoid grey (#808080). Text must have high contrast.",
+    "testing": "All interactive elements (buttons, inputs, toggles, workout cards) MUST have `data-testid` attributes in kebab-case."
+  }
+}
