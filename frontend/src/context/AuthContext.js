@@ -48,8 +48,12 @@ export const AuthProvider = ({ children }) => {
     return userData;
   };
 
-  const register = async (name, email, password) => {
-    const response = await api.post('/user/register', { name, email, password });
+  const register = async (name, email, password, fitnessGoal = null) => {
+    const payload = { name, email, password };
+    if (fitnessGoal) {
+      payload.fitness_goal = fitnessGoal;
+    }
+    const response = await api.post('/user/register', payload);
     const { access_token, user: userData } = response.data;
     
     localStorage.setItem('token', access_token);
@@ -57,6 +61,12 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     
     return userData;
+  };
+
+  const updateGoal = async (fitnessGoal) => {
+    const response = await api.put('/user/goal', { fitness_goal: fitnessGoal });
+    setUser(response.data);
+    return response.data;
   };
 
   const logout = () => {
@@ -74,6 +84,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     fetchProfile,
+    updateGoal,
   };
 
   return (

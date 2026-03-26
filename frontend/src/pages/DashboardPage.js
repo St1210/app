@@ -9,40 +9,62 @@ import {
   Flame, 
   Target,
   TrendingUp,
-  Calendar
+  Calendar,
+  Sparkles,
+  MessageCircle,
+  Lightbulb,
+  ChevronRight
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  ResponsiveContainer, 
+  Cell 
+} from 'recharts';
 
 const DashboardPage = () => {
   const { user } = useAuth();
   const [dashboard, setDashboard] = useState(null);
+  const [weeklyProgress, setWeeklyProgress] = useState(null);
+  const [coachMessage, setCoachMessage] = useState(null);
   const [recentWorkouts, setRecentWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDashboard = async () => {
+    const fetchData = async () => {
       try {
-        const [dashboardRes, workoutsRes] = await Promise.all([
+        const [dashboardRes, workoutsRes, weeklyRes, coachRes] = await Promise.all([
           api.get('/workout/dashboard'),
-          api.get('/workout/all')
+          api.get('/workout/all'),
+          api.get('/workout/weekly-progress'),
+          api.get('/coach/message')
         ]);
         setDashboard(dashboardRes.data);
         setRecentWorkouts(workoutsRes.data.slice(0, 5));
+        setWeeklyProgress(weeklyRes.data);
+        setCoachMessage(coachRes.data);
       } catch (error) {
         console.error('Failed to fetch dashboard:', error);
-        // Set default values if no workouts yet
         setDashboard({
           total_workouts: 0,
           completed_workouts: 0,
           streak: 0,
-          completion_percentage: 0
+          completion_percentage: 0,
+          motivational_message: "Let's start your fitness journey today!",
+          intensity_level: "LOW",
+          weekly_target: 5,
+          weekly_completed: 0
         });
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDashboard();
+    fetchData();
   }, []);
 
   const toggleWorkoutComplete = async (workoutId) => {
@@ -51,10 +73,13 @@ const DashboardPage = () => {
       setRecentWorkouts(prev => 
         prev.map(w => w.id === workoutId ? res.data : w)
       );
-      // Refresh dashboard stats
-      const dashboardRes = await api.get('/workout/dashboard');
+      const [dashboardRes, weeklyRes] = await Promise.all([
+        api.get('/workout/dashboard'),
+        api.get('/workout/weekly-progress')
+      ]);
       setDashboard(dashboardRes.data);
-      toast.success(res.data.completed ? 'Workout completed!' : 'Workout unmarked');
+      setWeeklyProgress(weeklyRes.data);
+      toast.success(res.data.completed ? 'Great job! Workout completed!' : 'Workout unmarked');
     } catch (error) {
       toast.error('Failed to update workout');
     }
@@ -101,30 +126,84 @@ const DashboardPage = () => {
     },
   ];
 
+  const intensityColors = {
+    LOW: '#34C759',
+    MEDIUM: '#007AFF',
+    HIGH: '#FF9500',
+    INTENSE: '#FF3B30'
+  };
+
   return (
     <div data-testid="dashboard-page" className="space-y-8 animate-fade-in">
       {/* Welcome Section */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
+      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+        <div className="flex-1">
           <h1 className="font-heading text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">
             Welcome back, {user?.name?.split(' ')[0]}
           </h1>
           <p className="text-[#A3A3A3] mt-1">
             Here's your fitness overview
           </p>
+          
+          {/* Intensity Badge */}
+          <div className="flex items-center gap-3 mt-4">
+            <span className="text-sm text-[#737373]">Current Level:</span>
+            <span 
+              className="px-3 py-1 text-xs font-bold uppercase tracking-wider"
+              style={{ 
+                backgroundColor: `${intensityColors[dashboard?.intensity_level || 'LOW']}20`,
+                color: intensityColors[dashboard?.intensity_level || 'LOW']
+              }}
+            >
+              {dashboard?.intensity_level || 'LOW'} Intensity
+            </span>
+          </div>
         </div>
+
+        {/* Streak Badge */}
         {dashboard?.streak > 0 && (
           <div 
             data-testid="streak-badge"
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#FF3B30] to-[#FF9500] animate-streak-pulse"
+            className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-[#FF3B30] to-[#FF9500] animate-pulse-glow"
           >
-            <Flame className="w-5 h-5 text-white" />
-            <span className="font-bold text-white">
-              {dashboard.streak} Day Streak!
-            </span>
+            <Flame className="w-8 h-8 text-white" />
+            <div>
+              <span className="font-heading text-3xl font-black text-white">
+                {dashboard.streak}
+              </span>
+              <span className="text-white/80 text-sm ml-1">Day Streak!</span>
+            </div>
           </div>
         )}
       </div>
+
+      {/* Coach Message Card */}
+      {coachMessage && (
+        <Card 
+          data-testid="coach-message-card"
+          className="bg-gradient-to-r from-[#007AFF]/10 to-[#34C759]/10 border-[#007AFF]/30 p-6"
+        >
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 bg-[#007AFF] flex items-center justify-center shrink-0">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-heading text-lg font-bold text-[#007AFF] uppercase tracking-tight mb-2">
+                Your AI Coach Says
+              </h3>
+              <p className="text-white text-lg font-medium mb-3">
+                "{dashboard?.motivational_message || coachMessage.message}"
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 text-sm">
+                <div className="flex items-center gap-2 text-[#A3A3A3]">
+                  <Lightbulb className="w-4 h-4 text-[#FF9500]" />
+                  <span>{coachMessage.tip_of_the_day}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -158,47 +237,127 @@ const DashboardPage = () => {
         ))}
       </div>
 
-      {/* Progress Section */}
-      <Card 
-        data-testid="progress-card"
-        className="bg-[#141414] border-white/10 p-6"
-      >
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <TrendingUp className="w-5 h-5 text-[#007AFF]" />
-            <h3 className="font-heading text-xl font-bold text-white uppercase tracking-tight">
-              Overall Progress
-            </h3>
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Weekly Progress Chart */}
+        <Card 
+          data-testid="weekly-chart"
+          className="bg-[#141414] border-white/10 p-6"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Calendar className="w-5 h-5 text-[#007AFF]" />
+              <h3 className="font-heading text-xl font-bold text-white uppercase tracking-tight">
+                This Week
+              </h3>
+            </div>
+            <span className="text-[#34C759] font-bold">
+              {weeklyProgress?.completed_this_week || 0} / {weeklyProgress?.total_this_week || 0}
+            </span>
           </div>
-          <span className="text-[#007AFF] font-bold text-lg">
-            {dashboard?.completion_percentage || 0}%
-          </span>
-        </div>
-        <Progress 
-          value={dashboard?.completion_percentage || 0} 
-          className="h-3 bg-[#1A1A1A]"
-        />
-        <p className="text-[#A3A3A3] text-sm mt-3">
-          {dashboard?.completed_workouts || 0} of {dashboard?.total_workouts || 0} workouts completed
-        </p>
-      </Card>
+          
+          {weeklyProgress?.week_data && (
+            <div className="h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={weeklyProgress.week_data}>
+                  <XAxis 
+                    dataKey="day" 
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: '#737373', fontSize: 12 }}
+                  />
+                  <YAxis hide />
+                  <Bar 
+                    dataKey="completed" 
+                    radius={[4, 4, 0, 0]}
+                  >
+                    {weeklyProgress.week_data.map((entry, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={entry.completed > 0 ? '#007AFF' : '#1A1A1A'} 
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </Card>
+
+        {/* Overall Progress */}
+        <Card 
+          data-testid="progress-card"
+          className="bg-[#141414] border-white/10 p-6"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <TrendingUp className="w-5 h-5 text-[#007AFF]" />
+              <h3 className="font-heading text-xl font-bold text-white uppercase tracking-tight">
+                Overall Progress
+              </h3>
+            </div>
+            <span className="text-[#007AFF] font-bold text-2xl">
+              {dashboard?.completion_percentage || 0}%
+            </span>
+          </div>
+          <Progress 
+            value={dashboard?.completion_percentage || 0} 
+            className="h-4 bg-[#1A1A1A]"
+          />
+          <p className="text-[#A3A3A3] text-sm mt-3">
+            {dashboard?.completed_workouts || 0} of {dashboard?.total_workouts || 0} workouts completed
+          </p>
+          
+          {/* Weekly Target */}
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[#737373] text-sm">Weekly Target</span>
+              <span className="text-white font-medium">
+                {dashboard?.weekly_completed || 0} / {dashboard?.weekly_target || 5}
+              </span>
+            </div>
+            <Progress 
+              value={((dashboard?.weekly_completed || 0) / (dashboard?.weekly_target || 5)) * 100} 
+              className="h-2 bg-[#1A1A1A]"
+            />
+          </div>
+        </Card>
+      </div>
 
       {/* Recent Workouts */}
       <div>
-        <div className="flex items-center gap-3 mb-4">
-          <Calendar className="w-5 h-5 text-[#007AFF]" />
-          <h3 className="font-heading text-xl font-bold text-white uppercase tracking-tight">
-            Recent Workouts
-          </h3>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <Dumbbell className="w-5 h-5 text-[#007AFF]" />
+            <h3 className="font-heading text-xl font-bold text-white uppercase tracking-tight">
+              Recent Workouts
+            </h3>
+          </div>
+          <Link 
+            to="/workouts"
+            data-testid="view-all-workouts-link"
+            className="flex items-center gap-1 text-[#007AFF] hover:text-[#005BB5] text-sm font-medium transition-colors"
+          >
+            View All
+            <ChevronRight className="w-4 h-4" />
+          </Link>
         </div>
 
         {recentWorkouts.length === 0 ? (
           <Card className="bg-[#141414] border-white/10 p-8 text-center">
-            <Dumbbell className="w-12 h-12 text-[#737373] mx-auto mb-4" />
-            <p className="text-[#A3A3A3] mb-2">No workouts yet</p>
-            <p className="text-[#737373] text-sm">
-              Generate your first workout plan to get started
+            <Sparkles className="w-12 h-12 text-[#007AFF] mx-auto mb-4" />
+            <p className="text-white font-medium mb-2">Ready to start?</p>
+            <p className="text-[#737373] text-sm mb-4">
+              Generate your first AI-powered workout plan
             </p>
+            <Link 
+              to="/workouts"
+              data-testid="start-workout-link"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#007AFF] hover:bg-[#005BB5] text-white font-bold uppercase tracking-wider transition-colors"
+            >
+              <Sparkles className="w-4 h-4" />
+              Generate Workouts
+            </Link>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -225,13 +384,18 @@ const DashboardPage = () => {
                       )}
                     </div>
                     <div>
-                      <h4 className={`font-semibold ${workout.completed ? 'text-[#34C759]' : 'text-white'}`}>
-                        {workout.title}
-                      </h4>
-                      <p className="text-[#737373] text-sm">{workout.description}</p>
+                      <div className="flex items-center gap-2">
+                        <h4 className={`font-semibold ${workout.completed ? 'text-[#34C759]' : 'text-white'}`}>
+                          {workout.title}
+                        </h4>
+                        {workout.ai_generated && (
+                          <Sparkles className="w-4 h-4 text-[#007AFF]" />
+                        )}
+                      </div>
+                      <p className="text-[#737373] text-sm line-clamp-1">{workout.description}</p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right hidden sm:block">
                     <span className={`program-badge ${workout.program_type}`}>
                       {workout.program_type.replace('_', ' ')}
                     </span>
