@@ -1,34 +1,154 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* HealthCoach App Styles */
+
+/* Card styles */
+.hc-card {
+  background-color: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+.hc-card:hover {
+  box-shadow: 0 0 15px rgba(0, 122, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+/* Button styles */
+.hc-btn-primary {
+  background-color: #007AFF;
+  color: #FFFFFF;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
 }
 
-.App-link {
-    color: #61dafb;
+.hc-btn-primary:hover {
+  background-color: #005BB5;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.hc-btn-primary:active {
+  transform: scale(0.98);
 }
+
+/* Input styles */
+.hc-input {
+  background-color: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  transition: all 0.2s ease;
+}
+
+.hc-input:focus {
+  border-color: #007AFF;
+  outline: none;
+  box-shadow: 0 0 0 1px #007AFF;
+}
+
+/* Navigation */
+.hc-nav {
+  background-color: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hc-nav-link {
+  color: #A3A3A3;
+  transition: color 0.2s ease;
+}
+
+.hc-nav-link:hover,
+.hc-nav-link.active {
+  color: #007AFF;
+}
+
+/* Progress bar */
+.hc-progress {
+  background-color: #141414;
+  overflow: hidden;
+}
+
+.hc-progress-bar {
+  background-color: #007AFF;
+  transition: width 0.5s ease;
+}
+
+/* Workout card */
+.workout-card {
+  background-color: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.workout-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.workout-card.completed {
+  border-color: #34C759;
+  background-color: rgba(52, 199, 89, 0.05);
+}
+
+/* Streak badge */
+.streak-badge {
+  background: linear-gradient(135deg, #FF3B30 0%, #FF9500 100%);
+  color: white;
+  font-weight: 700;
+}
+
+/* Stats card */
+.stats-card {
+  background-color: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-card .stat-value {
+  color: #007AFF;
+}
+
+/* Program type badges */
+.program-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.75rem;
+}
+
+.program-badge.BEGINNER { background-color: rgba(52, 199, 89, 0.2); color: #34C759; }
+.program-badge.WEIGHT_LOSS { background-color: rgba(255, 59, 48, 0.2); color: #FF3B30; }
+.program-badge.MUSCLE { background-color: rgba(0, 122, 255, 0.2); color: #007AFF; }
+.program-badge.FLEXIBILITY { background-color: rgba(175, 82, 222, 0.2); color: #AF52DE; }
+.program-badge.HOME { background-color: rgba(255, 149, 0, 0.2); color: #FF9500; }
+.program-badge.REHAB { background-color: rgba(90, 200, 250, 0.2); color: #5AC8FA; }
+
+/* Auth pages */
+.auth-container {
+  min-height: 100vh;
+  background-color: #0A0A0A;
+}
+
+/* Dashboard grid */
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Stagger animation delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
